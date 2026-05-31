@@ -1,24 +1,17 @@
 {
-  "name": "monitoring-ph-tanah",
+  "name": "soil-command-center-supabase-vercel",
   "version": "1.0.0",
   "private": true,
-  "description": "Dashboard HTML dan CSS untuk monitoring pH tanah berbasis IoT.",
+  "type": "module",
+  "description": "Dashboard monitoring pH tanah custom dengan Supabase Auth, profiles table, data sensor IoT, dan deploy Vercel.",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx serve ."
+    "dev": "vercel dev",
+    "start": "vercel dev"
   },
-  "keywords": [
-    "iot",
-    "ph-tanah",
-    "dashboard",
-    "pertanian-presisi",
-    "html",
-    "css",
-    "vercel"
-  ],
-  "author": "",
-  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  },
   "devDependencies": {
-    "serve": "^14.2.4"
+    "vercel": "^34.0.0"
   }
 }

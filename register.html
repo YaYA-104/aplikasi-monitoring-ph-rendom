@@ -3,66 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daftar | Dashboard Monitoring pH Tanah</title>
+  <title>Daftar | TerraPulse Supabase</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-page="register" class="auth-page">
-  <main class="auth-layout">
-    <section class="auth-brand-panel">
-      <a class="back-link" href="login.html">← Login</a>
-      <span class="brand-icon auth-brand-icon">🌱</span>
-      <p class="tag">Buat Akun Baru</p>
-      <h1>Daftar Pengguna Dashboard</h1>
-      <p>
-        Buat akun untuk mengakses dashboard monitoring pH tanah. Setelah daftar,
-        pengguna akan langsung diarahkan ke halaman dashboard.
-      </p>
-      <div class="auth-demo-box warning-box">
-        <strong>Catatan keamanan</strong>
-        <span>Versi ini memakai localStorage karena proyek masih static HTML, CSS, dan JavaScript.</span>
-        <span>Untuk produksi, gunakan backend autentikasi seperti Firebase atau Supabase.</span>
-      </div>
-    </section>
-
+<body class="auth-shell" data-page="register">
+  <main class="auth-grid reverse">
     <section class="auth-card">
-      <div class="auth-card-header">
-        <h2>Daftar</h2>
-        <p>Isi data akun baru.</p>
-      </div>
-
-      <form id="registerForm" class="auth-form">
+      <a class="back-link" href="login.html">Sudah punya akun?</a>
+      <h2>Daftar Akun</h2>
+      <p>Akun akan dibuat melalui Supabase Auth. Profil pengguna otomatis masuk ke tabel <code>profiles</code>.</p>
+      <form id="registerForm" class="form-panel">
         <label>
           <span>Nama Lengkap</span>
-          <input id="registerName" type="text" placeholder="Nama pengguna" autocomplete="name" required />
+          <input type="text" name="full_name" placeholder="Nama pengguna" required minlength="3" />
         </label>
-
         <label>
           <span>Email</span>
-          <input id="registerEmail" type="email" placeholder="contoh@email.com" autocomplete="email" required />
+          <input type="email" name="email" placeholder="nama@email.com" required />
         </label>
-
         <label>
           <span>Password</span>
-          <input id="registerPassword" type="password" placeholder="Minimal 6 karakter" autocomplete="new-password" minlength="6" required />
+          <input type="password" name="password" placeholder="Minimal 6 karakter" required minlength="6" />
         </label>
-
-        <label>
-          <span>Konfirmasi Password</span>
-          <input id="registerConfirmPassword" type="password" placeholder="Ulangi password" autocomplete="new-password" minlength="6" required />
-        </label>
-
-        <p class="form-message" id="registerMessage" role="alert"></p>
-
-        <button class="btn btn-primary full-btn" type="submit">Daftar</button>
+        <button class="primary-btn" type="submit">Daftar Sekarang</button>
       </form>
+      <p id="registerMessage" class="form-message"></p>
+    </section>
 
-      <p class="auth-switch">
-        Sudah punya akun?
-        <a href="login.html">Login di sini</a>
+    <section class="auth-visual">
+      <div class="soil-orbit compact-orbit">
+        <span></span>
+        <span></span>
+        <span></span>
+        <div class="orbit-core">IoT</div>
+      </div>
+      <p class="eyebrow">Supabase Auth</p>
+      <h1>Akun, sensor, dan data lahan dalam satu sistem.</h1>
+      <p class="auth-copy">
+        Register page ini cocok untuk deploy Vercel karena tidak membutuhkan server tradisional. Supabase menangani autentikasi dan PostgreSQL menangani data.
       </p>
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>

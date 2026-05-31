@@ -3,56 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | Dashboard Monitoring pH Tanah</title>
+  <title>Login | TerraPulse Supabase</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-page="login" class="auth-page">
-  <main class="auth-layout">
-    <section class="auth-brand-panel">
-      <a class="back-link" href="index.html">← Dashboard</a>
-      <span class="brand-icon auth-brand-icon">🌱</span>
-      <p class="tag">Monitoring pH Tanah Berbasis IoT</p>
-      <h1>Masuk ke Dashboard Monitoring Tanah</h1>
-      <p>
-        Gunakan akun yang sudah terdaftar untuk melihat data pH tanah, suhu tanah,
-        kelembaban tanah, dan ringkasan sistem monitoring berbasis ESP32 NodeMCU.
+<body class="auth-shell" data-page="login">
+  <main class="auth-grid">
+    <section class="auth-visual">
+      <div class="soil-orbit">
+        <span></span>
+        <span></span>
+        <span></span>
+        <div class="orbit-core">pH</div>
+      </div>
+      <p class="eyebrow">TerraPulse Supabase</p>
+      <h1>Masuk ke ruang kendali monitoring tanah.</h1>
+      <p class="auth-copy">
+        Login memakai Supabase Auth. Setelah masuk, dashboard akan membaca profil dari tabel <code>profiles</code> dan menampilkan simulasi pembacaan sensor IoT.
       </p>
-      <div class="auth-demo-box">
-        <strong>Akun demo</strong>
-        <span>Email: admin@phsoil.local</span>
-        <span>Password: admin123</span>
+      <div class="mini-stack">
+        <div><b>ESP32</b><span>NodeMCU</span></div>
+        <div><b>Auth</b><span>Supabase</span></div>
+        <div><b>DB</b><span>PostgreSQL</span></div>
       </div>
     </section>
 
     <section class="auth-card">
-      <div class="auth-card-header">
-        <h2>Login</h2>
-        <p>Masukkan email dan password untuk membuka dashboard.</p>
-      </div>
-
-      <form id="loginForm" class="auth-form">
+      <a class="back-link" href="register.html">Buat akun baru</a>
+      <h2>Login</h2>
+      <p>Gunakan akun yang sudah terdaftar di Supabase.</p>
+      <form id="loginForm" class="form-panel">
         <label>
           <span>Email</span>
-          <input id="loginEmail" type="email" placeholder="contoh@email.com" autocomplete="email" required />
+          <input type="email" name="email" placeholder="nama@email.com" required />
         </label>
-
         <label>
           <span>Password</span>
-          <input id="loginPassword" type="password" placeholder="Masukkan password" autocomplete="current-password" required />
+          <input type="password" name="password" placeholder="Password akun" required minlength="6" />
         </label>
-
-        <p class="form-message" id="loginMessage" role="alert"></p>
-
-        <button class="btn btn-primary full-btn" type="submit">Masuk</button>
+        <button class="primary-btn" type="submit">Masuk Dashboard</button>
       </form>
-
-      <p class="auth-switch">
-        Belum punya akun?
-        <a href="register.html">Daftar sekarang</a>
-      </p>
+      <p id="loginMessage" class="form-message"></p>
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>

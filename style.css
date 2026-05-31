@@ -873,3 +873,207 @@ code {
   color: var(--moss-700);
   font-weight: 800;
 }
+
+.chart-suite {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 22px 0;
+}
+
+.chart-card {
+  overflow: hidden;
+  position: relative;
+  min-height: 430px;
+}
+
+.chart-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.74;
+}
+
+.ph-chart-card::before {
+  background: radial-gradient(circle at 18% 0%, rgba(184, 219, 136, 0.24), transparent 18rem);
+}
+
+.temp-chart-card::before {
+  background: radial-gradient(circle at 18% 0%, rgba(109, 167, 197, 0.24), transparent 18rem);
+}
+
+.moisture-chart-card::before {
+  background: radial-gradient(circle at 18% 0%, rgba(94, 166, 166, 0.24), transparent 18rem);
+}
+
+.compact-title {
+  position: relative;
+  z-index: 1;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.chart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.moss-badge {
+  color: var(--moss-700);
+  background: rgba(184, 219, 136, 0.42);
+}
+
+.sky-badge {
+  color: #245b75;
+  background: rgba(109, 167, 197, 0.24);
+}
+
+.water-badge {
+  color: #256666;
+  background: rgba(94, 166, 166, 0.22);
+}
+
+.line-chart {
+  position: relative;
+  z-index: 1;
+  min-height: 280px;
+  margin-top: 18px;
+  border: 1px solid rgba(59, 36, 22, 0.09);
+  border-radius: 26px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 232, 0.76), rgba(255, 255, 255, 0.58)),
+    repeating-linear-gradient(135deg, rgba(59,36,22,0.04) 0 1px, transparent 1px 18px);
+}
+
+.trend-svg {
+  display: block;
+  width: 100%;
+  height: 280px;
+}
+
+.chart-grid-line {
+  stroke: rgba(59, 36, 22, 0.11);
+  stroke-width: 1;
+  stroke-dasharray: 5 9;
+}
+
+.chart-axis-line {
+  stroke: rgba(59, 36, 22, 0.18);
+  stroke-width: 1;
+}
+
+.chart-axis-text {
+  fill: rgba(36, 26, 20, 0.56);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.chart-line {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 8px 10px rgba(42,25,15,0.10));
+}
+
+.chart-area {
+  stroke: none;
+}
+
+.chart-line.ph-line,
+.chart-point {
+  stroke: var(--moss-700);
+}
+
+.chart-line.temp-line {
+  stroke: var(--sky-500);
+}
+
+.chart-line.moisture-line {
+  stroke: var(--water-500);
+}
+
+.chart-area.ph-line {
+  fill: rgba(184, 219, 136, 0.42);
+}
+
+.chart-area.temp-line {
+  fill: rgba(109, 167, 197, 0.30);
+}
+
+.chart-area.moisture-line {
+  fill: rgba(94, 166, 166, 0.30);
+}
+
+.chart-point {
+  fill: var(--cream-100);
+  stroke-width: 3;
+}
+
+.temp-chart-card .chart-point {
+  stroke: var(--sky-500);
+}
+
+.moisture-chart-card .chart-point {
+  stroke: var(--water-500);
+}
+
+.empty-chart {
+  display: grid;
+  min-height: 280px;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.chart-stat-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.chart-stat-row span {
+  display: grid;
+  gap: 4px;
+  border: 1px solid rgba(59, 36, 22, 0.09);
+  border-radius: 18px;
+  padding: 12px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.chart-stat-row b {
+  color: var(--soil-900);
+  font-size: 1rem;
+}
+
+@media (max-width: 1180px) {
+  .chart-suite {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .chart-stat-row {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card {
+    min-height: auto;
+  }
+}

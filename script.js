@@ -334,6 +334,144 @@ function renderStream(readings) {
   }).join('');
 }
 
+
+function getNumericValues(readings, key) {
+  return readings
+    .map((item) => Number(item[key]))
+    .filter((value) => Number.isFinite(value));
+}
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
+
+function renderLineChart(readings, config) {
+  const container = document.getElementById(config.containerId);
+  if (!container) return;
+
+  const latest = readings.slice(-24);
+  const values = getNumericValues(latest, config.key);
+
+  if (latest.length === 0 || values.length === 0) {
+    container.innerHTML = '<div class="empty-chart">Belum ada data sensor.</div>';
+    return;
+  }
+
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const range = maxValue - minValue || 1;
+  const top = 28;
+  const bottom = 210;
+  const left = 44;
+  const right = 690;
+  const width = right - left;
+  const height = bottom - top;
+
+  const points = latest.map((item, index) => {
+    const raw = Number(item[config.key]);
+    const x = latest.length === 1 ? left + width / 2 : left + (index / (latest.length - 1)) * width;
+    const y = bottom - ((raw - minValue) / range) * height;
+    return {
+      x,
+      y,
+      value: raw,
+      label: item.waktu || item.tanggal || index + 1
+    };
+  });
+
+  const linePath = points
+    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+    .join(' ');
+
+  const areaPath = `${linePath} L ${points[points.length - 1].x.toFixed(2)} ${bottom} L ${points[0].x.toFixed(2)} ${bottom} Z`;
+  const gridLines = [0, 1, 2, 3].map((item) => {
+    const y = top + item * (height / 3);
+    return `<line x1="${left}" y1="${y}" x2="${right}" y2="${y}" class="chart-grid-line" />`;
+  }).join('');
+
+  const pointNodes = points.map((point) => `
+    <circle class="chart-point" cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="4">
+      <title>${point.label} · ${point.value.toFixed(config.digits)}${config.suffix}</title>
+    </circle>
+  `).join('');
+
+  container.innerHTML = `
+    <svg class="trend-svg" viewBox="0 0 720 250" role="img" aria-label="${config.title}">
+      <defs>
+        <linearGradient id="${config.gradientId}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-opacity="0.35" />
+          <stop offset="100%" stop-opacity="0.02" />
+        </linearGradient>
+      </defs>
+      ${gridLines}
+      <line x1="${left}" y1="${bottom}" x2="${right}" y2="${bottom}" class="chart-axis-line" />
+      <text x="${left}" y="22" class="chart-axis-text">${maxValue.toFixed(config.digits)}${config.suffix}</text>
+      <text x="${left}" y="232" class="chart-axis-text">${minValue.toFixed(config.digits)}${config.suffix}</text>
+      <path class="chart-area ${config.className}" d="${areaPath}" />
+      <path class="chart-line ${config.className}" d="${linePath}" />
+      ${pointNodes}
+      <text x="${left}" y="246" class="chart-axis-text">${latest[0].tanggal || ''} ${latest[0].waktu || ''}</text>
+      <text x="${right}" y="246" text-anchor="end" class="chart-axis-text">${latest[latest.length - 1].tanggal || ''} ${latest[latest.length - 1].waktu || ''}</text>
+    </svg>
+  `;
+}
+
+function renderCharts(readings) {
+  const latest = readings[readings.length - 1] || {};
+  const phValues = getNumericValues(readings, 'ph_tanah');
+  const tempValues = getNumericValues(readings, 'suhu_tanah_c');
+  const moistureValues = getNumericValues(readings, 'kelembaban_tanah_persen');
+
+  if (phValues.length > 0) {
+    setText('minPhChart', Math.min(...phValues).toFixed(2));
+    setText('maxPhChart', Math.max(...phValues).toFixed(2));
+    setText('latestPhChart', Number(latest.ph_tanah || 0).toFixed(2));
+  }
+
+  if (tempValues.length > 0) {
+    setText('minTempChart', `${Math.min(...tempValues).toFixed(1)}°C`);
+    setText('maxTempChart', `${Math.max(...tempValues).toFixed(1)}°C`);
+    setText('latestTempChart', `${Number(latest.suhu_tanah_c || 0).toFixed(1)}°C`);
+  }
+
+  if (moistureValues.length > 0) {
+    setText('minMoistureChart', `${Math.min(...moistureValues).toFixed(1)}%`);
+    setText('maxMoistureChart', `${Math.max(...moistureValues).toFixed(1)}%`);
+    setText('latestMoistureChart', `${Number(latest.kelembaban_tanah_persen || 0).toFixed(1)}%`);
+  }
+
+  renderLineChart(readings, {
+    containerId: 'phTrendChart',
+    key: 'ph_tanah',
+    title: 'Grafik tren pH tanah',
+    suffix: '',
+    digits: 2,
+    gradientId: 'phChartGradient',
+    className: 'ph-line'
+  });
+
+  renderLineChart(readings, {
+    containerId: 'tempTrendChart',
+    key: 'suhu_tanah_c',
+    title: 'Grafik tren suhu tanah',
+    suffix: '°C',
+    digits: 1,
+    gradientId: 'tempChartGradient',
+    className: 'temp-line'
+  });
+
+  renderLineChart(readings, {
+    containerId: 'moistureTrendChart',
+    key: 'kelembaban_tanah_persen',
+    title: 'Grafik tren kelembaban tanah',
+    suffix: '%',
+    digits: 1,
+    gradientId: 'moistureChartGradient',
+    className: 'moisture-line'
+  });
+}
+
 function renderTable(readings) {
   const table = document.getElementById('readingsTable');
   if (!table) return;
@@ -356,6 +494,7 @@ function renderTable(readings) {
 function renderDashboardData(readings) {
   renderMetrics(readings);
   renderStream(readings);
+  renderCharts(readings);
   renderTable(readings);
 }
 

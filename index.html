@@ -19,6 +19,7 @@
       <nav class="side-nav">
         <a href="#overview" class="active">Overview</a>
         <a href="#simulator">Simulator IoT</a>
+        <a href="#grafik">Grafik Sensor</a>
         <a href="#database">Supabase DB</a>
         <a href="#data-table">Data Sensor</a>
       </nav>
@@ -84,6 +85,57 @@
           <span>Kelembaban</span>
           <strong id="avgMoisture">0%</strong>
           <small>Kondisi kadar air tanah</small>
+        </article>
+      </section>
+
+
+      <section id="grafik" class="chart-suite">
+        <article class="panel-card chart-card ph-chart-card">
+          <div class="panel-title compact-title">
+            <div>
+              <h3>Grafik pH Tanah</h3>
+              <p>Tren pH dari pembacaan sensor terbaru.</p>
+            </div>
+            <span class="chart-badge moss-badge">Netral</span>
+          </div>
+          <div id="phTrendChart" class="line-chart" aria-label="Grafik tren pH tanah"></div>
+          <div class="chart-stat-row">
+            <span>Min <b id="minPhChart">0</b></span>
+            <span>Maks <b id="maxPhChart">0</b></span>
+            <span>Terbaru <b id="latestPhChart">0</b></span>
+          </div>
+        </article>
+
+        <article class="panel-card chart-card temp-chart-card">
+          <div class="panel-title compact-title">
+            <div>
+              <h3>Grafik Suhu Tanah</h3>
+              <p>Perubahan temperatur tanah pada node ESP32.</p>
+            </div>
+            <span class="chart-badge sky-badge">°C</span>
+          </div>
+          <div id="tempTrendChart" class="line-chart" aria-label="Grafik tren suhu tanah"></div>
+          <div class="chart-stat-row">
+            <span>Min <b id="minTempChart">0°C</b></span>
+            <span>Maks <b id="maxTempChart">0°C</b></span>
+            <span>Terbaru <b id="latestTempChart">0°C</b></span>
+          </div>
+        </article>
+
+        <article class="panel-card chart-card moisture-chart-card">
+          <div class="panel-title compact-title">
+            <div>
+              <h3>Grafik Kelembaban Tanah</h3>
+              <p>Monitoring kadar air tanah untuk mendukung irigasi presisi.</p>
+            </div>
+            <span class="chart-badge water-badge">%</span>
+          </div>
+          <div id="moistureTrendChart" class="line-chart" aria-label="Grafik tren kelembaban tanah"></div>
+          <div class="chart-stat-row">
+            <span>Min <b id="minMoistureChart">0%</b></span>
+            <span>Maks <b id="maxMoistureChart">0%</b></span>
+            <span>Terbaru <b id="latestMoistureChart">0%</b></span>
+          </div>
         </article>
       </section>
 

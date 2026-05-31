@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Monitoring pH Tanah Berbasis IoT</title>
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    if (!localStorage.getItem("ph_current_user")) {
+      window.location.replace("login.html");
+    }
+  </script>
+</head>
+<body data-page="dashboard">
+  <header class="hero">
+    <nav class="navbar">
+      <div class="brand">
+        <span class="brand-icon">🌱</span>
+        <div>
+          <h1>Monitoring pH Tanah</h1>
+          <p>Dashboard IoT Pertanian Presisi</p>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="nav-badge">ESP32 NodeMCU</span>
+        <span class="user-pill" id="currentUserLabel">User</span>
+        <button class="logout-btn" id="logoutBtn" type="button">Keluar</button>
+      </div>
+    </nav>
+
+    <section class="hero-content">
+      <div class="hero-text">
+        <span class="tag">Model Sistem Monitoring pH Tanah Berbasis IoT</span>
+        <h2>Dashboard Monitoring Kondisi Tanah Secara Real-Time</h2>
+        <p>
+          Aplikasi web ini menampilkan data hasil pengujian pH tanah, suhu tanah,
+          dan kelembaban tanah dari prototype monitoring berbasis Internet of Things.
+          Data digunakan untuk membantu pemantauan lahan pertanian secara lebih mudah,
+          terukur, dan terdokumentasi.
+        </p>
+        <div class="hero-actions">
+          <a href="#data" class="btn btn-primary">Lihat Data</a>
+          <a href="#ringkasan" class="btn btn-secondary">Ringkasan Sistem</a>
+        </div>
+      </div>
+
+      <div class="status-card">
+        <p class="status-label">Status Lahan</p>
+        <h3>Netral</h3>
+        <p>Seluruh data pengamatan menunjukkan kondisi tanah netral.</p>
+        <div class="status-meter">
+          <span style="width: 100%;"></span>
+        </div>
+        <small>100% data berstatus netral</small>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="auth-info-card">
+      <div>
+        <p class="eyebrow">Akses Dashboard</p>
+        <h2>Dashboard ini aktif setelah pengguna login.</h2>
+        <p>Fitur login dan daftar dibuat untuk kebutuhan demo static site di GitHub dan Vercel. Akun tersimpan di browser pengguna menggunakan localStorage.</p>
+      </div>
+      <a class="btn btn-secondary" href="register.html">Tambah Akun</a>
+    </section>
+    <section class="panel iot-live-panel" id="simulasi-iot">
+      <div class="panel-header">
+        <div>
+          <h2>Simulasi Pembacaan Alat IoT</h2>
+          <p>Data random dibuat seolah-olah berasal dari sensor pH tanah yang dikirim oleh ESP32 secara berkala.</p>
+        </div>
+        <span class="badge badge-live" id="simulatorStatus">Simulator Siap</span>
+      </div>
+
+      <div class="live-grid">
+        <article class="live-card primary-live">
+          <p>pH Tanah Terbaru</p>
+          <h3 id="livePh">-</h3>
+          <small id="liveStatus">Menunggu data</small>
+        </article>
+        <article class="live-card">
+          <p>Suhu Tanah</p>
+          <h3 id="liveSuhu">-</h3>
+          <small>Derajat Celsius</small>
+        </article>
+        <article class="live-card">
+          <p>Kelembaban</p>
+          <h3 id="liveKelembaban">-</h3>
+          <small>Persentase kadar air tanah</small>
+        </article>
+        <article class="live-card">
+          <p>Baterai Alat</p>
+          <h3 id="liveBattery">-</h3>
+          <small id="liveSignal">RSSI: -</small>
+        </article>
+      </div>
+
+      <div class="iot-actions">
+        <button class="btn btn-primary" id="generateOneBtn" type="button">Buat 1 Data Random</button>
+        <button class="btn btn-secondary" id="toggleSimulatorBtn" type="button">Mulai Simulator Otomatis</button>
+        <a class="btn btn-secondary" href="data-ph-iot-random.csv" download>Download CSV Random</a>
+        <a class="btn btn-secondary" href="data-ph-iot-random.json" download>Download JSON Random</a>
+      </div>
+
+      <p class="iot-timestamp">Update terakhir: <strong id="liveTimestamp">Belum ada pembacaan</strong></p>
+
+      <div class="table-wrapper mini-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Timestamp</th>
+              <th>pH</th>
+              <th>Suhu</th>
+              <th>Kelembaban</th>
+              <th>Status</th>
+              <th>Baterai</th>
+              <th>RSSI</th>
+            </tr>
+          </thead>
+          <tbody id="liveTableBody">
+            <tr>
+              <td colspan="8">Klik tombol buat data random atau mulai simulator otomatis.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="stats-grid" id="ringkasan">
+      <article class="stat-card">
+        <span class="icon">📊</span>
+        <p>Jumlah Data</p>
+        <h3>36</h3>
+        <small>Pengukuran Februari–April 2026</small>
+      </article>
+
+      <article class="stat-card">
+        <span class="icon">🧪</span>
+        <p>Rata-rata pH</p>
+        <h3>6.58</h3>
+        <small>Rentang pH 6.47–6.70</small>
+      </article>
+
+      <article class="stat-card">
+        <span class="icon">🌡️</span>
+        <p>Rata-rata Suhu</p>
+        <h3>24.61°C</h3>
+        <small>Rentang 21.30–28.61°C</small>
+      </article>
+
+      <article class="stat-card">
+        <span class="icon">💧</span>
+        <p>Rata-rata Kelembaban</p>
+        <h3>87.65%</h3>
+        <small>Rentang 73.67–90.00%</small>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel wide">
+        <div class="panel-header">
+          <div>
+            <h2>Grafik Tren pH Tanah</h2>
+            <p>Visualisasi sederhana berdasarkan data pengukuran mingguan.</p>
+          </div>
+          <span class="badge">pH Netral</span>
+        </div>
+
+        <div class="chart ph-chart">
+          <div class="bar" style="height: 54%;"><span>6.48</span></div>
+          <div class="bar" style="height: 60%;"><span>6.52</span></div>
+          <div class="bar" style="height: 62%;"><span>6.53</span></div>
+          <div class="bar" style="height: 66%;"><span>6.56</span></div>
+          <div class="bar" style="height: 70%;"><span>6.58</span></div>
+          <div class="bar" style="height: 74%;"><span>6.61</span></div>
+          <div class="bar" style="height: 80%;"><span>6.64</span></div>
+          <div class="bar" style="height: 58%;"><span>6.55</span></div>
+          <div class="bar" style="height: 95%;"><span>6.70</span></div>
+          <div class="bar" style="height: 86%;"><span>6.67</span></div>
+        </div>
+
+        <div class="chart-labels">
+          <span>01 Feb</span>
+          <span>08 Feb</span>
+          <span>15 Feb</span>
+          <span>22 Feb</span>
+          <span>01 Mar</span>
+          <span>08 Mar</span>
+          <span>15 Mar</span>
+          <span>01 Apr</span>
+          <span>15 Apr</span>
+          <span>29 Apr</span>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Komponen Sistem</h2>
+        <ul class="component-list">
+          <li><span>01</span> Sensor pH tanah</li>
+          <li><span>02</span> Sensor suhu tanah</li>
+          <li><span>03</span> Sensor kelembaban tanah</li>
+          <li><span>04</span> ESP32 NodeMCU</li>
+          <li><span>05</span> Dashboard monitoring web</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <h2>Rata-rata Suhu Tanah</h2>
+        <div class="progress-list">
+          <div>
+            <p>08:00 <span>21.89°C</span></p>
+            <div class="progress"><span style="width: 68%;"></span></div>
+          </div>
+          <div>
+            <p>12:00 <span>24.20°C</span></p>
+            <div class="progress"><span style="width: 78%;"></span></div>
+          </div>
+          <div>
+            <p>16:00 <span>27.84°C</span></p>
+            <div class="progress"><span style="width: 92%;"></span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Rata-rata Kelembaban Tanah</h2>
+        <div class="progress-list">
+          <div>
+            <p>Februari <span>90.00%</span></p>
+            <div class="progress"><span style="width: 100%;"></span></div>
+          </div>
+          <div>
+            <p>Maret <span>85.25%</span></p>
+            <div class="progress"><span style="width: 85%;"></span></div>
+          </div>
+          <div>
+            <p>April <span>87.79%</span></p>
+            <div class="progress"><span style="width: 88%;"></span></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel table-panel" id="data">
+      <div class="panel-header">
+        <div>
+          <h2>Tabel Data Monitoring pH Tanah</h2>
+          <p>Data pengukuran pH tanah, suhu tanah, kelembaban tanah, dan status tanah.</p>
+        </div>
+        <span class="badge">36 Data</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Waktu</th>
+              <th>pH Tanah</th>
+              <th>Suhu Tanah (°C)</th>
+              <th>Kelembaban (%)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>01-02-2026</td><td>08:00</td><td>6.48</td><td>21.5</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>2</td><td>01-02-2026</td><td>12:00</td><td>6.50</td><td>23.2</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>3</td><td>01-02-2026</td><td>16:00</td><td>6.47</td><td>27.1</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>4</td><td>08-02-2026</td><td>08:00</td><td>6.52</td><td>21.3</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>5</td><td>08-02-2026</td><td>12:00</td><td>6.55</td><td>23.5</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>6</td><td>08-02-2026</td><td>16:00</td><td>6.51</td><td>27.4</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>7</td><td>15-02-2026</td><td>08:00</td><td>6.53</td><td>21.8</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>8</td><td>15-02-2026</td><td>12:00</td><td>6.56</td><td>24.0</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>9</td><td>15-02-2026</td><td>16:00</td><td>6.54</td><td>27.6</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>10</td><td>22-02-2026</td><td>08:00</td><td>6.55</td><td>21.9</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>11</td><td>22-02-2026</td><td>12:00</td><td>6.58</td><td>24.2</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>12</td><td>22-02-2026</td><td>16:00</td><td>6.56</td><td>27.8</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>13</td><td>01-03-2026</td><td>08:00</td><td>6.57</td><td>22.1</td><td>88.0</td><td><span>Netral</span></td></tr>
+            <tr><td>14</td><td>01-03-2026</td><td>12:00</td><td>6.60</td><td>24.3</td><td>88.0</td><td><span>Netral</span></td></tr>
+            <tr><td>15</td><td>01-03-2026</td><td>16:00</td><td>6.58</td><td>28.0</td><td>88.0</td><td><span>Netral</span></td></tr>
+            <tr><td>16</td><td>08-03-2026</td><td>08:00</td><td>6.60</td><td>22.0</td><td>87.0</td><td><span>Netral</span></td></tr>
+            <tr><td>17</td><td>08-03-2026</td><td>12:00</td><td>6.62</td><td>24.5</td><td>87.0</td><td><span>Netral</span></td></tr>
+            <tr><td>18</td><td>08-03-2026</td><td>16:00</td><td>6.61</td><td>28.2</td><td>87.0</td><td><span>Netral</span></td></tr>
+            <tr><td>19</td><td>15-03-2026</td><td>08:00</td><td>6.61</td><td>22.2</td><td>85.0</td><td><span>Netral</span></td></tr>
+            <tr><td>20</td><td>15-03-2026</td><td>12:00</td><td>6.64</td><td>24.7</td><td>85.0</td><td><span>Netral</span></td></tr>
+            <tr><td>21</td><td>15-03-2026</td><td>16:00</td><td>6.62</td><td>28.4</td><td>85.0</td><td><span>Netral</span></td></tr>
+            <tr><td>22</td><td>22-03-2026</td><td>08:00</td><td>6.60</td><td>22.3</td><td>83.0</td><td><span>Netral</span></td></tr>
+            <tr><td>23</td><td>22-03-2026</td><td>12:00</td><td>6.63</td><td>24.9</td><td>83.0</td><td><span>Netral</span></td></tr>
+            <tr><td>24</td><td>22-03-2026</td><td>16:00</td><td>6.61</td><td>28.6</td><td>83.0</td><td><span>Netral</span></td></tr>
+            <tr><td>25</td><td>01-04-2026</td><td>08:00</td><td>6.52</td><td>22.04</td><td>73.67</td><td><span>Netral</span></td></tr>
+            <tr><td>26</td><td>01-04-2026</td><td>12:00</td><td>6.59</td><td>23.34</td><td>79.81</td><td><span>Netral</span></td></tr>
+            <tr><td>27</td><td>01-04-2026</td><td>16:00</td><td>6.55</td><td>28.61</td><td>85.02</td><td><span>Netral</span></td></tr>
+            <tr><td>28</td><td>15-04-2026</td><td>08:00</td><td>6.61</td><td>22.36</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>29</td><td>15-04-2026</td><td>12:00</td><td>6.70</td><td>24.67</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>30</td><td>15-04-2026</td><td>16:00</td><td>6.65</td><td>27.47</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>31</td><td>22-04-2026</td><td>08:00</td><td>6.60</td><td>22.0</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>32</td><td>22-04-2026</td><td>12:00</td><td>6.63</td><td>24.29</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>33</td><td>22-04-2026</td><td>16:00</td><td>6.57</td><td>26.67</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>34</td><td>29-04-2026</td><td>08:00</td><td>6.61</td><td>21.62</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>35</td><td>29-04-2026</td><td>12:00</td><td>6.65</td><td>22.77</td><td>90.0</td><td><span>Netral</span></td></tr>
+            <tr><td>36</td><td>29-04-2026</td><td>16:00</td><td>6.67</td><td>27.16</td><td>90.0</td><td><span>Netral</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Dashboard Monitoring pH Tanah Berbasis IoT | Prototype Pertanian Presisi</p>
+  </footer>
+  <script src="data-ph-iot-random.js"></script>
+  <script src="iot-simulator.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

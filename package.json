@@ -1,0 +1,24 @@
+{
+  "name": "monitoring-ph-tanah",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dashboard HTML dan CSS untuk monitoring pH tanah berbasis IoT.",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "iot",
+    "ph-tanah",
+    "dashboard",
+    "pertanian-presisi",
+    "html",
+    "css",
+    "vercel"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

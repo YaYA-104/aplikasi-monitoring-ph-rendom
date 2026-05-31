@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Dashboard Monitoring pH Tanah</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="login" class="auth-page">
+  <main class="auth-layout">
+    <section class="auth-brand-panel">
+      <a class="back-link" href="index.html">← Dashboard</a>
+      <span class="brand-icon auth-brand-icon">🌱</span>
+      <p class="tag">Monitoring pH Tanah Berbasis IoT</p>
+      <h1>Masuk ke Dashboard Monitoring Tanah</h1>
+      <p>
+        Gunakan akun yang sudah terdaftar untuk melihat data pH tanah, suhu tanah,
+        kelembaban tanah, dan ringkasan sistem monitoring berbasis ESP32 NodeMCU.
+      </p>
+      <div class="auth-demo-box">
+        <strong>Akun demo</strong>
+        <span>Email: admin@phsoil.local</span>
+        <span>Password: admin123</span>
+      </div>
+    </section>
+
+    <section class="auth-card">
+      <div class="auth-card-header">
+        <h2>Login</h2>
+        <p>Masukkan email dan password untuk membuka dashboard.</p>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <label>
+          <span>Email</span>
+          <input id="loginEmail" type="email" placeholder="contoh@email.com" autocomplete="email" required />
+        </label>
+
+        <label>
+          <span>Password</span>
+          <input id="loginPassword" type="password" placeholder="Masukkan password" autocomplete="current-password" required />
+        </label>
+
+        <p class="form-message" id="loginMessage" role="alert"></p>
+
+        <button class="btn btn-primary full-btn" type="submit">Masuk</button>
+      </form>
+
+      <p class="auth-switch">
+        Belum punya akun?
+        <a href="register.html">Daftar sekarang</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
